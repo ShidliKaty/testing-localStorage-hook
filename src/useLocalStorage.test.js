@@ -49,4 +49,14 @@ describe("#useLocalStorage", () => {
         expect(result.current[0]).toBeUndefined()
         expect(localStorage.getItem(key)).toBeNull()
     })
+    it("should use the value in localStorage if it exists", () => {
+        const key = "key"
+        const initialValue = "initial"
+        const existingValue = "existing"
+        localStorage.setItem(key, JSON.stringify(existingValue))
+        const {result} = renderLocalStorageHook(key, initialValue)
+
+        expect(result.current[0]).toBe(existingValue)
+        expect(localStorage.getItem(key)).toBe(JSON.stringify(existingValue))
+    })
 })
