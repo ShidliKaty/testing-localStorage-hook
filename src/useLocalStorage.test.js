@@ -1,4 +1,4 @@
-import { renderHook } from "@testing-library/react"
+import { act, renderHook } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 import {useLocalStorage} from "./useLocalStorage"
 
@@ -22,5 +22,16 @@ describe("#useLocalStorage", () => {
 
         expect(result.current[0]).toBe(initialValue)
         expect(localStorage.getItem(key)).toBe(JSON.stringify(initialValue))
+    })
+    it("should update localStorage when setValue is called", () => {
+        const key = "key"
+        const initialValue = "initial"
+        const {result} = renderLocalStorageHook(key, initialValue)
+
+        const newValue = "new"
+        act(() => result.current[1](newValue)) //wait untill all state variables to be changed and then do further actions
+
+        expect(result.current[0]).toBe(newValue)
+        expect(localStorage.getItem(key)).toBe(JSON.stringify(newValue))
     })
 })
