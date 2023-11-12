@@ -39,4 +39,14 @@ describe("#useLocalStorage", () => {
         expect(result.current[0]).toBe(newValue)
         expect(localStorage.getItem(key)).toBe(JSON.stringify(newValue))
     })
+    it("should clear localStorage when setValue is called with undefined", () => {
+        const key = "key"
+        const initialValue = "initial"
+        const {result} = renderLocalStorageHook(key, initialValue)
+
+        act(() => result.current[1](undefined)) //wait untill all state variables to be changed and then do further actions
+
+        expect(result.current[0]).toBeUndefined()
+        expect(localStorage.getItem(key)).toBeNull()
+    })
 })
